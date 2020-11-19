@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Handling Form Submission</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>Result</h1>
+<p th:text="'id: ' + ${newUser.id}" />
+<p th:text="'openness: ' + ${newUser.openness}" />
+<p th:text="'agreeableness: ' + ${newUser.agreeableness}" />
+<p th:text="'emotional stability: ' + ${newUser.emotional_stability}" />
+<p th:text="'conscientiousness: ' + ${newUser.conscientiousness}" />
+<p th:text="'extraversion: ' + ${newUser.extraversion}" />
+<a href="/greeting">Submit another message</a>
+</body>
+</html>

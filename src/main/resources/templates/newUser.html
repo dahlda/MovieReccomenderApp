@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Submit User Personality Info</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>Form</h1>
+<t>Please give yourself a score from 1-7 on the following personality traits</t>
+<form action="#" th:action="@{/userEntry}" th:object="${newUser}" method="post">
+    <p>Id: <input type="text" th:field="*{id}" /></p>
+    <p>Openness: <input type="text" th:field="*{openness}" /></p>
+    <p>Agreeableness: <input type="text" th:field="*{agreeableness}" /></p>
+    <p>Emotional Stability: <input type="text" th:field="*{emotional_stability}" /></p>
+    <p>conscientiousness: <input type="text" th:field="*{conscientiousness}" /></p>
+    <p>extraversion: <input type="text" th:field="*{extraversion}" /></p>
+    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+</form>
+</body>
+</html>

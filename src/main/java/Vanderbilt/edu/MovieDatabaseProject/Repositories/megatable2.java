@@ -19,6 +19,7 @@ public class megatable2 {
     private float rating;
     private String dateTime;
 
+
     public megatable2(){}
 
     public megatable2(String userID, Long movieID, float rating, String dt){

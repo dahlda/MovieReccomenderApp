@@ -1,8 +1,11 @@
 package Vanderbilt.edu.MovieDatabaseProject.Repositories;
 
-import Vanderbilt.edu.MovieDatabaseProject.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.sql.CallableStatement;
 import java.util.List;
 
 @Service
@@ -14,6 +17,9 @@ public class MegatableService implements MegatableRepositoryInterface {
     @Autowired
     private megatable2Repository repoB;
 
+    @Autowired
+    EntityManager em;
+
     @Override
     public List<megatable1> findAllOne() {
         return (List<megatable1>) repoA.findAll();
@@ -22,5 +28,27 @@ public class MegatableService implements MegatableRepositoryInterface {
     @Override
     public List<megatable2> findAllTwo() {
         return (List<megatable2>) repoB.findAll();
+    }
+
+    public List<Integer> reccomendMovies(double a, double b, double c, double d, double e){
+
+        Query q = em.createNativeQuery("{CALL RECCOMEND_MOVIES_BY_PERSONALITY(?, ?, ?, ?, ?)}")
+                .setParameter(1, a).setParameter(2, b).setParameter(3, c).setParameter(4, d)
+                .setParameter(5, e);
+        List<Integer> results = q.getResultList();
+        return results;
+    }
+
+    public List<Integer> topMovies(){
+        Query q = em.createNativeQuery("{SELECT movie_id FROM(\n" +
+                "SELECT movie_id, AVG(rating)\n" +
+                "FROM megatable2 m\n" +
+                "GROUP BY movie_id\n" +
+                "HAVING AVG(rating) > 4.5\n" +
+                "ORDER BY AVG(rating) DESC) temp\n" +
+                "LIMIT 10}");
+
+        List<Integer> results = q.getResultList();
+        return results;
     }
 }

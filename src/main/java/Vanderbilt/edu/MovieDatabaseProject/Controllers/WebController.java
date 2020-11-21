@@ -31,6 +31,34 @@ public class WebController {
         return returnVal;
     }
 
+    //double a, double b, double c, double d, double e
+    @GetMapping("/topReccomendations")
+    public String topReccomendations(){
+        List<Integer> test = repoService.reccomendMovies(4.0, 3.0, 4.5, 2.0, 2.5);
+        String results = "My top ten reccomended movies for you are: \n";
+        boolean empty = false;
+        int i = 0;
+        do{
+            if(test.get(i).equals(null) || i == 9){
+                empty = true;
+            }
+            results = results + test.get(i).toString() + "\n";
+            ++i;
+        }while(!empty);
+
+        if(i<9){
+            int temp = 9-i;
+            List<Integer> fillers = repoService.topMovies();
+            for(int k = 0; k < temp; ++k){
+                results = results + test.get(i).toString() + "\n";
+            }
+        }
+
+        return results;
+
+    }
+
+
 
 
 

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class userController {
 
+    public WebController web;
+
     @GetMapping("/userEntry")
     public String newUserForm(Model model){
         model.addAttribute("newUser", new newUser());
@@ -19,11 +21,8 @@ public class userController {
     }
 
     @PostMapping("/userEntry")
-    public String formSubmitted(@ModelAttribute newUser newUser, Model model){
+    public String formSubmitted(@ModelAttribute newUser newUser, Model model) {
         model.addAttribute("newUser", newUser);
-        return "result";
+        return "results";
     }
-
-
-
 }

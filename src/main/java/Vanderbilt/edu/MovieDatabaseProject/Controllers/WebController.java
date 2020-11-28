@@ -3,14 +3,18 @@ package Vanderbilt.edu.MovieDatabaseProject.Controllers;
 import Vanderbilt.edu.MovieDatabaseProject.JsonReader;
 import Vanderbilt.edu.MovieDatabaseProject.Repositories.MegatableService;
 import Vanderbilt.edu.MovieDatabaseProject.Repositories.megatable1;
+import Vanderbilt.edu.MovieDatabaseProject.Repositories.megatable2;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -23,6 +27,14 @@ public class WebController {
         return "Hello, World!";
     }
 
+    @GetMapping(path = "/")
+    public String landing(){ return "<h1> If you'd like to make a movie reccomendation, please enter a web address " +
+            "with the format localhost:8080/newReccomendation" +
+            "?movieID={insert ID here}&rating={insert rating from 1.0-5.0 here}</h1>" +
+            "<p> Movie IDs can be searched <a href=\"https://www.themoviedb.org\">here</a></p>" +
+            "<h2> If you'd like to see our reccomendations for you, click <a href=\"http://localhost:8080/userEntry\">here</a></h2>";}
+
+
     @GetMapping("/dbConnection")
     public String showUserInfo(){
 
@@ -31,6 +43,26 @@ public class WebController {
         megatable1 t = temp.get(0);
         String returnVal = "user " + t.getUserID() + " has an agreeableness score of: " + t.getAgreeableness();
         return returnVal;
+    }
+
+    @GetMapping("/newReccomendation")
+    public String recValidation(long movieID, double rating) throws SQLException {
+        repoService.addRec(movieID, rating);
+        List<megatable2> recs = repoService.returnRatings();
+        String results = "<!DOCTYPE HTML>\n" +
+                "<html xmlns:th=\"https://www.thymeleaf.org\">\n" +
+                "<head>\n" +
+                "    <title>Submit User Personality Info</title>\n" +
+                "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n" +
+                "</head>\n" +
+                "<body>";
+
+        for(megatable2 m: recs){
+            results += m.toString();
+        }
+
+        return results;
+
     }
 
     //double a, double b, double c, double d, double e
@@ -67,7 +99,10 @@ public class WebController {
         int top100 = 10;
         for(int n = 0; n < 10; ++n){
             while(movieTitles[n].equalsIgnoreCase("Movie unavailable in Database")
-                    || getAdult(Integer.toString(movieIDs[n])) != "false"){
+                    || getAdult(Integer.toString(movieIDs[n]))
+            || movieTitles[n].equalsIgnoreCase("Damn Yankees: Live In Japan")
+            || movieTitles[n].equalsIgnoreCase("Wojtek: The Bear That Went to War")
+            || getPoster(Integer.toString(movieIDs[n])).equalsIgnoreCase("Movie unavailable in Database")){
                 movieTitles[n] = getTitle(Integer.toString(fillers.get(top100)));
                 movieIDs[n] = fillers.get(top100);
                 ++top100;
@@ -170,7 +205,7 @@ public class WebController {
         String url = "https://api.themoviedb.org/3/movie/" + id + "?api_key=3fd6464010a6ccad6cba672c8d42cb74&language=en-US";
         JsonReader reader = new JsonReader();
         JSONObject json = reader.readJsonFromUrl(url);
-        if(json != null) {
+        if(json != null && !(json.get("poster_path").toString().equalsIgnoreCase("null"))) {
             return "https://image.tmdb.org/t/p/original" + json.get("poster_path").toString();
         }
         else{
@@ -179,19 +214,20 @@ public class WebController {
 
     }
 
-    public String getAdult(String id) throws IOException, JSONException {
+    public boolean getAdult(String id) throws IOException, JSONException {
 
         String url = "https://api.themoviedb.org/3/movie/" + id + "?api_key=3fd6464010a6ccad6cba672c8d42cb74&language=en-US";
         JsonReader reader = new JsonReader();
         JSONObject json = reader.readJsonFromUrl(url);
         if(json != null) {
-            return json.get("adult").toString();
+            return (boolean) json.get("adult");
         }
         else{
-            return "Movie unavailable in Database";
+            return true;
         }
 
     }
+
 
 
 

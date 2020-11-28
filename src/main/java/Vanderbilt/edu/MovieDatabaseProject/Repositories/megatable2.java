@@ -1,5 +1,8 @@
 package Vanderbilt.edu.MovieDatabaseProject.Repositories;
 
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,14 +18,28 @@ public class megatable2 {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String user_id;
 
-    private Long movie_id;
-    private float rating;
+    private int movie_id;
+    private BigDecimal rating;
     private String dateTime;
 
+    public String toString(){
+        return "<h1> movie_id: " + movie_id + " rating: " + rating + " date of rating: "
+                + dateTime + "</h1>";
+    }
+
+    public Timestamp getDate() {
+        return date;
+    }
+
+    public void setDate(Timestamp date) {
+        this.date = date;
+    }
+
+    private Timestamp date;
 
     public megatable2(){}
 
-    public megatable2(String userID, Long movieID, float rating, String dt){
+    public megatable2(String userID, int movieID, BigDecimal rating, String dt){
 
         this.user_id = userID;
         this.movie_id = movieID;
@@ -39,19 +56,19 @@ public class megatable2 {
         this.user_id = user_id;
     }
 
-    public Long getMovie_id() {
+    public int getMovie_id() {
         return movie_id;
     }
 
-    public void setMovie_id(Long movie_id) {
+    public void setMovie_id(int movie_id) {
         this.movie_id = movie_id;
     }
 
-    public float getRating() {
+    public BigDecimal getRating() {
         return rating;
     }
 
-    public void setRating(float rating) {
+    public void setRating(BigDecimal rating) {
         this.rating = rating;
     }
 

@@ -23,6 +23,7 @@ public class userController {
     @PostMapping("/userEntry")
     public String formSubmitted(@ModelAttribute newUser newUser, Model model) {
         model.addAttribute("newUser", newUser);
-        return "results";
+        System.out.println(newUser.getAgreeableness());
+        return "result";
     }
 }

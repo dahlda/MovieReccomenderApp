@@ -40,13 +40,7 @@ public class MegatableService implements MegatableRepositoryInterface {
     }
 
     public List<Integer> topMovies(){
-        Query q = em.createNativeQuery("{SELECT movie_id FROM(\n" +
-                "SELECT movie_id, AVG(rating)\n" +
-                "FROM megatable2 m\n" +
-                "GROUP BY movie_id\n" +
-                "HAVING AVG(rating) > 4.5\n" +
-                "ORDER BY AVG(rating) DESC) temp\n" +
-                "LIMIT 10}");
+        Query q = em.createNativeQuery("CALL TOP_MOVIES()");
 
         List<Integer> results = q.getResultList();
         return results;

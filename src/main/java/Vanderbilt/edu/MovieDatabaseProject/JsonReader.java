@@ -33,12 +33,4 @@ public class JsonReader {
         }
     }
 
-    public int getResponseCode(String url) throws IOException, JSONException {
-
-        URL connection = new URL(url);
-        HttpURLConnection http = (HttpURLConnection)connection.openConnection();
-        int statusCode = http.getResponseCode();
-        return statusCode;
-
-    }
 }

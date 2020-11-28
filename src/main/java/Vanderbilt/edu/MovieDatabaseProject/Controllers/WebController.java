@@ -35,9 +35,15 @@ public class WebController {
 
     //double a, double b, double c, double d, double e
     @GetMapping("/topReccomendations")
-    public String topReccomendations() throws IOException, JSONException {
+    public String topReccomendations(newUser user) throws IOException, JSONException {
 
-        List<Integer> test = repoService.reccomendMovies(4.0, 4.0, 4.0, 4.0, 4.0);
+        double open = user.getOpenness();
+        double agree = user.getAgreeableness();
+        double es = user.getEmotional_stability();
+        double c = user.getConscientiousness();
+        double ex = user.getExtraversion();
+
+        List<Integer> test = repoService.reccomendMovies(open, agree, es, c, ex);
         String[] movieTitles = new String[10];
         int[] movieIDs = new int[10];
         List<Integer> fillers = repoService.topMovies();

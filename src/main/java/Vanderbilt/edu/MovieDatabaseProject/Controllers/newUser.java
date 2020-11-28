@@ -3,12 +3,7 @@ package Vanderbilt.edu.MovieDatabaseProject.Controllers;
 public class newUser {
 
     private long id;
-    private int openness;
-    private int agreeableness;
-    private int emotional_stability;
-    private int conscientiousness;
-    private int extraversion;
-
+    private double openness;
 
     public long getId() {
         return id;
@@ -18,45 +13,52 @@ public class newUser {
         this.id = id;
     }
 
-    public int getOpenness() {
+    public double getOpenness() {
         return openness;
     }
 
-    public void setOpenness(int openness) {
+    public void setOpenness(double openness) {
         this.openness = openness;
     }
 
-    public int getAgreeableness() {
+    public double getAgreeableness() {
         return agreeableness;
     }
 
-    public void setAgreeableness(int agreeableness) {
+    public void setAgreeableness(double agreeableness) {
         this.agreeableness = agreeableness;
     }
 
-    public int getEmotional_stability() {
+    public double getEmotional_stability() {
         return emotional_stability;
     }
 
-    public void setEmotional_stability(int emotional_stability) {
+    public void setEmotional_stability(double emotional_stability) {
         this.emotional_stability = emotional_stability;
     }
 
-    public int getConscientiousness() {
+    public double getConscientiousness() {
         return conscientiousness;
     }
 
-    public void setConscientiousness(int conscientiousness) {
+    public void setConscientiousness(double conscientiousness) {
         this.conscientiousness = conscientiousness;
     }
 
-    public int getExtraversion() {
+    public double getExtraversion() {
         return extraversion;
     }
 
-    public void setExtraversion(int extraversion) {
+    public void setExtraversion(double extraversion) {
         this.extraversion = extraversion;
     }
+
+    private double agreeableness;
+    private double emotional_stability;
+    private double conscientiousness;
+    private double extraversion;
+
+
 
 
 

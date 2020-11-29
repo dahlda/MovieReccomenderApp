@@ -4,4 +4,5 @@ used to help make API calls. The API key that I used to make calls is hardcoded 
 shouldn't be an issue. The API calls themselves are made to https://themoviedb.org -- these 
 calls are used to get poster and title information about movies, since the original db files did not 
 have this information. Source control was managed using github. The project was written using 
-Java 14.0.2 and MySQL 5.7.26 (MySQL Community Server (GPL)).
+Java 14.0.2 and MySQL 5.7.26 (MySQL Community Server (GPL)). SQL files can be found in the /sqlFiles
+directory.

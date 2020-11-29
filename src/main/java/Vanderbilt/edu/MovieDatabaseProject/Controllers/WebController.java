@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -28,11 +31,22 @@ public class WebController {
     }
 
     @GetMapping(path = "/")
-    public String landing(){ return "<h1> If you'd like to make a movie reccomendation, please enter a web address " +
-            "with the format localhost:8080/newReccomendation" +
-            "?movieID={insert ID here}&rating={insert rating from 1.0-5.0 here}</h1>" +
-            "<p> Movie IDs can be searched <a href=\"https://www.themoviedb.org\">here</a></p>" +
-            "<h2> If you'd like to see our reccomendations for you, click <a href=\"http://localhost:8080/userEntry\">here</a></h2>";}
+    public String landing(){ return "<h1>Welcome to the Movie Reccomender Database!</h1><p>" +
+            "Welcome! This is a Java Spring and MySQL powered movie reccomendation web app. " +
+            "Here, you can recieve reccomendations from movies all around the world and all throughout time. These " +
+            "reccomendations are based on a quick survey that will quantify the prevalence of 5 of your " +
+            "personality traits. You" +
+            " can also make reccomendations of your own and contribute to the project, if you so choose! " +
+            "There are 3 links accessible below: the first will take you to a movie reccomendation" +
+            " form, where you can add your input into the database. The second takes you to the Movie Database, " +
+            "the website we make API calls to in order to get extra info about all our movies. You can use the second" +
+            " link to find the necessary ID information you'll need to make movie recs. The last link will " +
+            "take you to a form that will reccomend movies to you based on self-reported personality characteristics!" +
+            " These reccomendations are made based on thousands of other users who have already rated movies and " +
+            "provided personality input. We hope you'll enjoy, and that you find some interesting new movies!" +
+            "<h1><input type=\"button\" onclick=\"location.href='http://localhost:8080/makeRec';\" value=\"Make a Movie Reccomendation (Check out the movie IDs first)\" /></h1>" +
+            "<h1><input type=\"button\" onclick=\"location.href='https://www.themoviedb.org';\" value=\"Search for Movie IDs\" /></h1>" +
+            "<h1><input type=\"button\" onclick=\"location.href='http://localhost:8080/userEntry';\" value=\"Get Personalized Movie Recs\" /></h1>";}
 
 
     @GetMapping("/dbConnection")
@@ -45,9 +59,45 @@ public class WebController {
         return returnVal;
     }
 
+    @GetMapping("/makeRec")
+    public String makeRec(){
+        return "<t> Please submit a rating for your movie of choice, " +
+                "then add your personality profile" +
+                "<form action=newReccomendation method=\"get\">\n" +
+                "  <label for=\"movieID\">Movie ID:</label><br>\n" +
+                "  <input type=\"text\" id=\"movieID\" name=\"movieID\" value=\"\"><br>\n" +
+                "  <label for=\"rating\">Rating (1.0-5.0):</label><br>\n" +
+                "  <input type=\"text\" id=\"rating\" name=\"rating\" value=\"\"><br><br>\n" +
+                "  <label for=\"openness\">Openness:</label><br>\n" +
+                "  <input type=\"text\" id=\"openness\" name=\"openness\" value=\"\"><br>\n" +
+                "  <label for=\"agreeableness\">Agreeableness:</label><br>\n" +
+                "  <input type=\"text\" id=\"agreeableness\" name=\"agreeableness\" value=\"\"><br>\n" +
+                "  <label for=\"emotional_stability\">Emotional Stability:</label><br>\n" +
+                "  <input type=\"text\" id=\"emotional_stability\" name=\"emotional_stability\" value=\"\"><br>\n" +
+                "  <label for=\"conscientiousness\">Conscientiousness:</label><br>\n" +
+                "  <input type=\"text\" id=\"conscientiousness\" name=\"conscientiousness\" value=\"\"><br>\n" +
+                "  <label for=\"extraversion\">Extraversion:</label><br>\n" +
+                "  <input type=\"text\" id=\"extraversion\" name=\"extraversion\" value=\"\"><br>\n" +
+                "  <input type=\"submit\" value=\"Submit\">\n" +
+                "</form>";
+    }
+
     @GetMapping("/newReccomendation")
-    public String recValidation(long movieID, double rating) throws SQLException {
-        repoService.addRec(movieID, rating);
+    public String recValidation(int movieID, double rating, double openness, double agreeableness,
+                                double emotional_stability, double conscientiousness, double extraversion)
+            throws SQLException {
+
+        megatable1 m = new megatable1();
+        m.setAgreeableness(agreeableness);
+        m.setConscientiousness(conscientiousness);
+        m.setEmotional_stability(emotional_stability);
+        m.setExtraversion(extraversion);
+        m.setOpenness(openness);
+
+        megatable1 x = repoService.repoA.save(m);
+
+
+        repoService.addRec(x.getUserID(), movieID, rating);
         List<megatable2> recs = repoService.returnRatings();
         String results = "<!DOCTYPE HTML>\n" +
                 "<html xmlns:th=\"https://www.thymeleaf.org\">\n" +
@@ -57,8 +107,8 @@ public class WebController {
                 "</head>\n" +
                 "<body>";
 
-        for(megatable2 m: recs){
-            results += m.toString();
+        for(megatable2 n: recs){
+            results += n.toString();
         }
 
         return results;
@@ -227,15 +277,5 @@ public class WebController {
         }
 
     }
-
-
-
-
-
-
-
-
-
-
 
 }

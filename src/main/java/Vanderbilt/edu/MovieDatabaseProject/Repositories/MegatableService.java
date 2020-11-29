@@ -20,10 +20,10 @@ import java.util.List;
 public class MegatableService implements MegatableRepositoryInterface {
 
     @Autowired
-    private megatable1Repository repoA;
+    public megatable1Repository repoA;
 
     @Autowired
-    private megatable2Repository repoB;
+    public megatable2Repository repoB;
 
     @Autowired
     EntityManager em;
@@ -59,7 +59,7 @@ public class MegatableService implements MegatableRepositoryInterface {
         return q.getFirstResult();
     }
 
-    public void addRec(long movieID, double rating) throws SQLException {
+    public void addRec(String uid, long movieID, double rating) throws SQLException {
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
@@ -68,11 +68,11 @@ public class MegatableService implements MegatableRepositoryInterface {
                 .getConnection("jdbc:mysql://127.0.0.1:8889/personalitydb", "root", "root");
 
         Statement stmt = connection.createStatement();
-        stmt.execute("CALL INSERT_RATING(" + movieID + "," + rating + ",\"" + dt + "\");");
+        stmt.execute("CALL INSERT_RATING(\"" + uid + "\", " + movieID + ", " + rating + ", \"" + dt + "\");");
     }
 
     public List<megatable2> returnRatings(){
-        Query q = em.createNativeQuery("select movie_id, rating, date_time from megatable2\n" +
+        Query q = em.createNativeQuery("select user_id, movie_id, rating, date_time from megatable2\n" +
                 "ORDER BY tstamp desc\n" +
                 "limit 10;");
 
@@ -82,9 +82,10 @@ public class MegatableService implements MegatableRepositoryInterface {
         while(itr.hasNext()){
             megatable2 t = new megatable2();
             Object[] obj = (Object[]) itr.next();
-            t.setMovie_id((int) obj[0]);
-            t.setRating((BigDecimal) obj[1]);
-            t.setDATETIME((String) obj[2]);
+            t.setUser_id((String) obj[0]);
+            t.setMovie_id((int) obj[1]);
+            t.setRating((BigDecimal) obj[2]);
+            t.setDATETIME((String) obj[3]);
             temp.add(t);
         }
 

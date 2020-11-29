@@ -1,5 +1,6 @@
 package Vanderbilt.edu.MovieDatabaseProject.Repositories;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.repository.query.Procedure;
 
 import java.util.Objects;
@@ -13,8 +14,8 @@ import javax.persistence.Table;
 @Table(name = "megatable1")
 public class megatable1 {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String userID;
 
     private double openness;

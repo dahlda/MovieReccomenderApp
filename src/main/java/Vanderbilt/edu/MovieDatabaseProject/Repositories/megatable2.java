@@ -1,5 +1,7 @@
 package Vanderbilt.edu.MovieDatabaseProject.Repositories;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -14,8 +16,8 @@ import javax.persistence.Table;
 @Table(name = "megatable2")
 public class megatable2 {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String user_id;
 
     private int movie_id;
@@ -23,7 +25,7 @@ public class megatable2 {
     private String dateTime;
 
     public String toString(){
-        return "<h1> movie_id: " + movie_id + " rating: " + rating + " date of rating: "
+        return "<h1> user_id: " + user_id +  ", movie_id: " + movie_id + ", rating: " + rating + ", date of rating: "
                 + dateTime + "</h1>";
     }
 

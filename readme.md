@@ -6,3 +6,6 @@ calls are used to get poster and title information about movies, since the origi
 have this information. Source control was managed using github. The project was written using 
 Java 14.0.2 and MySQL 5.7.26 (MySQL Community Server (GPL)). SQL files can be found in the /sqlFiles
 directory.
+
+
+The demo video can be found here: https://youtu.be/BzNcdea7HEs
